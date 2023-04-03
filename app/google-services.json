@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "820158761808",
+    "firebase_url": "https://chatapplication-173a3-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "chatapplication-173a3",
+    "storage_bucket": "chatapplication-173a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820158761808:android:205ff91e49faab989a3a55",
+        "android_client_info": {
+          "package_name": "com.unallapps.chatapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820158761808-ma2eba5sjp345787d67rau7lel78hhrk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL0-sfCSrtRIsrdE5GNK8YgsM8ZlQt334"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820158761808-ma2eba5sjp345787d67rau7lel78hhrk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
