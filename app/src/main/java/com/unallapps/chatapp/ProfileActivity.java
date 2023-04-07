@@ -120,6 +120,7 @@ public class ProfileActivity extends AppCompatActivity {
                     if (userName.matches(firebaseAuth.getCurrentUser().getEmail())) {
                         String age = hashMap.get("userage");
                         String image = hashMap.get("userimageurl");
+                        System.out.println(image);
                         if (age != null && image != null) {
                             Picasso.get().load(image).into(profilImage);
                             ageEdittext.setText(age);

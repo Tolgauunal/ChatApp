@@ -2,6 +2,8 @@ package com.unallapps.chatapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+import com.squareup.picasso.Picasso;
 import com.unallapps.chatapp.databinding.ActivityChatBinding;
 
 import java.util.ArrayList;
@@ -34,14 +39,11 @@ import java.util.UUID;
 
 public class ChatActivity extends AppCompatActivity {
     ActivityChatBinding binding;
+    FrameLayout frameLayout;
+    ChipNavigationBar chipNavigationBar;
     FirebaseAuth firebaseAuth;
-    RecyclerView chatRecyclerview;
-    EditText message;
-    Button sendMessage;
-    private ArrayList<String> chatMessagesFirebase = new ArrayList<>();
-    SendMessageRecylerViewAdapter recylerViewAdapter;
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    GlobalChat globalChat;
+    PrivateChat privateChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,57 +51,31 @@ public class ChatActivity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
-        message = binding.chatActtivityMessageEdit;
-        sendMessage = binding.chatActivitySendButton;
-
-        chatRecyclerview = binding.chatActivityRecylerview;
-        recylerViewAdapter = new SendMessageRecylerViewAdapter(chatMessagesFirebase);
-        RecyclerView.LayoutManager recyclerViewManager = new LinearLayoutManager(getApplicationContext());
-        chatRecyclerview.setLayoutManager(recyclerViewManager);
-        chatRecyclerview.setAdapter(recylerViewAdapter);
-        sendMessage.setOnClickListener(view1 -> send());
-
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference();
-        getData();
-    }
-
-    private void send() {
-        String messageToSend = message.getText().toString();
-        UUID uuid = UUID.randomUUID();
-        String uuidString = uuid.toString();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        String userEmail = firebaseUser.getEmail();
-        databaseReference.child("Chats").child(uuidString).child("usermessage").setValue(messageToSend);
-        databaseReference.child("Chats").child(uuidString).child("useremail").setValue(userEmail);
-        databaseReference.child("Chats").child(uuidString).child("usermessagetime").setValue(ServerValue.TIMESTAMP);
-        message.setText("");
-        getData();
-    }
-
-    public void getData() {
-        DatabaseReference newReference = firebaseDatabase.getReference("Chats");
-        Query query = newReference.orderByChild("usermessagetime");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                chatMessagesFirebase.clear();
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    HashMap<String, String> hashMap = (HashMap<String, String>) ds.getValue();
-                    String userEmail = hashMap.get("useremail");
-                    String userMessage = hashMap.get("usermessage");
-                    chatMessagesFirebase.add(userEmail + ": " + userMessage);
-                    recylerViewAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage().toString(), Toast.LENGTH_SHORT).show();
+        frameLayout = binding.fragmentContainer;
+        globalChat = new GlobalChat();
+        privateChat = new PrivateChat();
+        chipNavigationBar = binding.bottomNavMenu;
+        setFragment(globalChat);
+        chipNavigationBar.setItemSelected(R.id.chipGlobal, true);
+        chipNavigationBar.setOnItemSelectedListener(i -> {
+            switch (i) {
+                case R.id.chipGlobal:
+                    setFragment(globalChat);
+                    break;
+                case R.id.chipPrivate:
+                    setFragment(privateChat);
+                    break;
             }
         });
+    }
+
+    private void setFragment(Fragment fragment) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle();
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -121,4 +97,5 @@ public class ChatActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

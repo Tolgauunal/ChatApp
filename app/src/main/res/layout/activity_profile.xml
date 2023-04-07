@@ -8,13 +8,13 @@
 
     <ImageView
         android:id="@+id/select_image"
-        android:layout_width="300dp"
-        android:layout_height="250dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_launcher_background" />
+        tools:srcCompat="@drawable/selectimage" />
 
     <EditText
         android:id="@+id/profileAge"
