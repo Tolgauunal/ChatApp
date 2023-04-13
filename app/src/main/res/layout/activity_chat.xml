@@ -8,15 +8,18 @@
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_nav_menu" />
 
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/bottom_nav_menu"
         android:layout_width="match_parent"
+        app:cnb_textColor="#ffff"
         android:layout_height="60dp"
+        app:cnb_unselectedColor="@color/white"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
+        android:background="#03A9F4"
         app:cnb_menuResource="@menu/chipmenu"
         app:cnb_radius="8dp" />
 </RelativeLayout>

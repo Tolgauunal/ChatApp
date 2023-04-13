@@ -3,10 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/chipGlobal"
+        android:icon="@drawable/ic_baseline_chat_24"
         android:title="Global Chat"
-        app:cnb_iconColor="#293559" />
+        app:cnb_textColor="#ffff"
+        app:cnb_iconColor="#FFFFFF" />
     <item
         android:id="@+id/chipPrivate"
+        android:icon="@drawable/ic_baseline_chat_24"
         android:title="Private Chat"
-        app:cnb_iconColor="#293559" />
+        app:cnb_iconColor="#FFFFFF"
+        app:cnb_textColor="#ffff" />
 </menu>

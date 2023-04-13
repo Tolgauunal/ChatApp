@@ -1,32 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chatLinear"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:layout_margin="5dp"
-        android:padding="5dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/message_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/defaultimage" />
+
+            <TextView
+                android:id="@+id/email_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="tolga1997@gmail.com"
+                android:textColor="#3F51B5"
+                android:textSize="11sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/recyler_view_test_message"
-            android:layout_width="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/message_image"
-            android:text="Chat Message" />
+            android:text="Chat Message"
+            android:textColor="@color/black"
+            android:textSize="11sp" />
+    </LinearLayout>
 
-        <ImageView
-            android:id="@+id/message_image"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center"
-            android:src="@drawable/defaultimage" />
-    </RelativeLayout>
-
-</FrameLayout>
+</LinearLayout>

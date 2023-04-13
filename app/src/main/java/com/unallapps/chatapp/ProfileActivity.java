@@ -10,9 +10,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.unallapps.chatapp.databinding.ActivityProfileBinding;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
@@ -61,32 +66,30 @@ public class ProfileActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference();
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
-        getData();
         profilImage.setOnClickListener(view1 -> selectImageGallery());
         profileUpdate.setOnClickListener(view12 -> profileUpdateBtn());
+        getData();
     }
 
     private void profileUpdateBtn() {
-        UUID uuidImage = UUID.randomUUID();
-        String imageName = "images/" + uuidImage + "jpg";
+        String key = firebaseAuth.getUid();
+        String imageName = "images/" + key + "jpg";
         StorageReference newReference = storageReference.child(imageName);
         newReference.putFile(selectedUri).addOnSuccessListener(taskSnapshot -> {
-            StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("images/" + uuidImage + "jpg");
+            StorageReference profileImageRef = FirebaseStorage.getInstance().getReference("images/" + key + "jpg");
             profileImageRef.getDownloadUrl().addOnSuccessListener(uri -> {
                 String dowloandURL = uri.toString();
-                UUID uuid = UUID.randomUUID();
-                String uuidString = uuid.toString();
                 String userAge = ageEdittext.getText().toString();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 String userEmail = user.getEmail().toString();
-                databaseReference.child("Profiles").child(uuidString).child("userimageurl").setValue(dowloandURL);
-                databaseReference.child("Profiles").child(uuidString).child("userage").setValue(userAge);
-                databaseReference.child("Profiles").child(uuidString).child("useremail").setValue(userEmail);
+                databaseReference.child("Profiles").child(key).child("useremail").setValue(userEmail);
+                databaseReference.child("Profiles").child(key).child("userimageurl").setValue(dowloandURL);
+                databaseReference.child("Profiles").child(key).child("userage").setValue(userAge);
                 Toast.makeText(this, "Uploaded!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-                startActivity(intent);
             });
         }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), e.getLocalizedMessage().toString(), Toast.LENGTH_SHORT).show());
+        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        startActivity(intent);
     }
 
     private void selectImageGallery() {
@@ -142,6 +145,7 @@ public class ProfileActivity extends AppCompatActivity {
             selectedUri = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedUri);
+
                 profilImage.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();

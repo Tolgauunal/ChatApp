@@ -14,16 +14,28 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText userEmail, userPassaword;
     Button signIn, signUp;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
+    private StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+        storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
@@ -50,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void sign_In() {
